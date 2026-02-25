@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Clear loading message
       activitiesList.innerHTML = "";
+      // reset the select list but keep placeholder
+      activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
@@ -19,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
+
+        // if no spots remaining, mark card with full class
+        if (spotsLeft <= 0) {
+          activityCard.classList.add('full');
+        }
 
         // Build participants list HTML
         let participantsHtml;
@@ -37,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <p><strong>Availability:</strong> ${spotsLeft > 0 ? `${spotsLeft} spots left` : '<span class="full-text">Full</span>'}</p>
           <div class="participants">
             <strong>Participants:</strong>
             ${participantsHtml}
@@ -49,7 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Add option to select dropdown
         const option = document.createElement("option");
         option.value = name;
-        option.textContent = name;
+        option.textContent = name + (spotsLeft <= 0 ? ' (Full)' : '');
+        if (spotsLeft <= 0) {
+          option.disabled = true;
+        }
         activitySelect.appendChild(option);
       });
     } catch (error) {

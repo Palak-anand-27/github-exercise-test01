@@ -86,6 +86,17 @@ section h3 {
   margin-top: 5px;
 }
 
+/* visual indicator when an activity is full */
+.activity-card.full {
+  background-color: #ffebee;
+  border-color: #c62828;
+}
+
+.full-text {
+  color: #c62828;
+  font-weight: bold;
+}
+
 .remove-participant {
   background: none;
   border: none;
